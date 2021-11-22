@@ -15,9 +15,6 @@ class Game {
             }
         });
 
-
-        this.world = this.generator.createBox();
-
         Matter.Composite.add(this.engine.world, this.generator.getWorld());
 
         Matter.Render.run(this.renderer);
