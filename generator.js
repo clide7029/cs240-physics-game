@@ -88,13 +88,6 @@ class Generator {
         return columns;
     }
 
-<<<<<<< HEAD
-    addBounds(composite){
-        console.dir(composite.bounds);
-    }
-
-}
-=======
     buildArches(width, height, girth, row, col) {
         var grid = Matter.Composite.create();
         for (let i = 0; i < row; i++) {
@@ -126,4 +119,3 @@ class Generator {
 
 
 }
->>>>>>> 92112665dad870e3399cef1887477805dcbdcaab
