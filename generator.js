@@ -1,3 +1,5 @@
+// const { Composite } = require("matter-js");
+
 class Generator {
     constructor() {
         this.world = Matter.Composite.create();
@@ -10,7 +12,9 @@ class Generator {
     getWorld() {
         Matter.Composite.add(this.world, this.ground);
 
-        var box = this.createBoxes(80, 80, 8, 4, 4);
+        var box = this.buildArches(80, 80, 10, 2, 2);
+        // var box = this.compArch(80, 80, 8);
+        // var box = this.createBoxes(80, 80, 8, 2, 2);
 
         this.translateGround(box);
 
@@ -81,5 +85,35 @@ class Generator {
         });
         return columns;
     }
+
+    buildArches(width, height, girth, row, col) {
+        var grid = Matter.Composite.create();
+        for (let i = 0; i < row; i++) {
+            for (let j = 0; j < col; j++) {
+                let temp = this.compArch(width, height, girth);
+                Matter.Composite.translate(temp, { "x": (i * width), "y": (j * height) });
+                Matter.Composite.add(grid, temp);
+            }
+        }
+
+        return grid;
+    }
+
+
+    compArch(width, height, girth) {
+        let xoffset = ((width - girth) / 2);
+        let yoffset = ((height - girth) / 2);
+
+        var arch = Matter.Composite.create();
+        var top = Matter.Bodies.rectangle(0, 0, width, girth);
+        var left = Matter.Bodies.rectangle(-xoffset, yoffset, girth, (height - 2 * girth));
+        var right = Matter.Bodies.rectangle(xoffset, yoffset, girth, (height - 2 * girth));
+
+        Matter.Composite.add(arch, [top, left, right]);
+
+        return arch;
+    }
+
+
 
 }
