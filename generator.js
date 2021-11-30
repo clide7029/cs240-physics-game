@@ -10,7 +10,15 @@ class Generator {
     getWorld() {
         Matter.Composite.add(this.world, this.ground);
 
-        var box = this.createBoxes(80, 80, 8, 4, 4);
+        var box = this.createArches(60, 60, 10, 4, 4);
+        // var partA = Matter.Bodies.rectangle(x, y, width, girth);
+        // var part1 = Matter.Bodies.rectangle(x - xoffset, y + yoffset, girth, (height - 2 * girth));
+        // var part2 = Matter.Bodies.rectangle(x + xoffset, y + yoffset, girth, (height - 2 * girth));
+
+        // var box = Matter.Composite.create();
+        // Matter.Composite.add(box3, [partA, part1, part2]);
+        console.dir(box);
+
 
         this.translateGround(box);
 
@@ -38,14 +46,16 @@ class Generator {
         let xoffset = ((width - girth) / 2);
         let yoffset = ((height - girth) / 2);
 
-        var grid = Matter.Composites.stack(0, 0, row, col, 0, 0, function(x, y) {
+        var grid = Matter.Composites.stack(0, 0, row, col, 1, 0, function(x, y) {
             var partA = Matter.Bodies.rectangle(x, y, width, girth);
             var part1 = Matter.Bodies.rectangle(x - xoffset, y + yoffset, girth, (height - 2 * girth));
             var part2 = Matter.Bodies.rectangle(x + xoffset, y + yoffset, girth, (height - 2 * girth));
 
-            return Matter.Body.create({
-                parts: [partA, part1, part2]
-            });
+            var arch = Matter.Composite.create();
+            Matter.Composite.add(arch, [partA, part1, part2]);
+            arch.bounds = Matter.Composite.bounds(arch);
+            console.dir(arch);
+            return arch;
 
         });
 
@@ -80,6 +90,10 @@ class Generator {
             return Matter.Bodies.rectangle(x, y, girth, height);
         });
         return columns;
+    }
+
+    addBounds(composite){
+        console.dir(composite.bounds);
     }
 
 }
