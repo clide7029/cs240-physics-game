@@ -1,3 +1,5 @@
+// const { Composite } = require("matter-js");
+
 class Generator {
     constructor() {
         this.world = Matter.Composite.create();
@@ -10,15 +12,9 @@ class Generator {
     getWorld() {
         Matter.Composite.add(this.world, this.ground);
 
-        var box = this.createArches(60, 60, 10, 4, 4);
-        // var partA = Matter.Bodies.rectangle(x, y, width, girth);
-        // var part1 = Matter.Bodies.rectangle(x - xoffset, y + yoffset, girth, (height - 2 * girth));
-        // var part2 = Matter.Bodies.rectangle(x + xoffset, y + yoffset, girth, (height - 2 * girth));
-
-        // var box = Matter.Composite.create();
-        // Matter.Composite.add(box3, [partA, part1, part2]);
-        console.dir(box);
-
+        var box = this.buildArches(80, 80, 10, 2, 2);
+        // var box = this.compArch(80, 80, 8);
+        // var box = this.createBoxes(80, 80, 8, 2, 2);
 
         this.translateGround(box);
 
@@ -92,8 +88,42 @@ class Generator {
         return columns;
     }
 
+<<<<<<< HEAD
     addBounds(composite){
         console.dir(composite.bounds);
     }
 
 }
+=======
+    buildArches(width, height, girth, row, col) {
+        var grid = Matter.Composite.create();
+        for (let i = 0; i < row; i++) {
+            for (let j = 0; j < col; j++) {
+                let temp = this.compArch(width, height, girth);
+                Matter.Composite.translate(temp, { "x": (i * width), "y": (j * height) });
+                Matter.Composite.add(grid, temp);
+            }
+        }
+
+        return grid;
+    }
+
+
+    compArch(width, height, girth) {
+        let xoffset = ((width - girth) / 2);
+        let yoffset = ((height - girth) / 2);
+
+        var arch = Matter.Composite.create();
+        var top = Matter.Bodies.rectangle(0, 0, width, girth);
+        var left = Matter.Bodies.rectangle(-xoffset, yoffset, girth, (height - 2 * girth));
+        var right = Matter.Bodies.rectangle(xoffset, yoffset, girth, (height - 2 * girth));
+
+        Matter.Composite.add(arch, [top, left, right]);
+
+        return arch;
+    }
+
+
+
+}
+>>>>>>> 92112665dad870e3399cef1887477805dcbdcaab
