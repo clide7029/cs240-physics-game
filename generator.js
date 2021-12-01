@@ -47,9 +47,11 @@ class Generator {
             var part1 = Matter.Bodies.rectangle(xoffset, girth + yoffset, girth, (height - 2 * girth));
             var part2 = Matter.Bodies.rectangle(xoffset, girth + yoffset, girth, (height - 2 * girth));
 
-            return Matter.Body.create({
-                parts: [partA, part1, part2]
-            });
+            var arch = Matter.Composite.create();
+            Matter.Composite.add(arch, [partA, part1, part2]);
+            arch.bounds = Matter.Composite.bounds(arch);
+            console.dir(arch);
+            return arch;
 
         });
 
