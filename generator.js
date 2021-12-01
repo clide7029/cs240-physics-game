@@ -2,6 +2,7 @@
 
 class Generator {
     constructor() {
+        this.seed = 
         this.world = Matter.Composite.create();
         this.ground = Matter.Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
         this.origin = { "x": 0, "y": 0 };
@@ -12,7 +13,8 @@ class Generator {
     getWorld() {
         Matter.Composite.add(this.world, this.ground);
 
-        var box = this.buildArches(80, 80, 10, 2, 2);
+        var box = this.stackArch(160, 160, 32);
+        // var box = this.buildArches(80, 80, 10, 4, 2);
         // var box = this.compArch(80, 80, 8);
         // var box = this.createBoxes(80, 80, 8, 2, 2);
 
@@ -107,15 +109,40 @@ class Generator {
         let yoffset = ((height - girth) / 2);
 
         var arch = Matter.Composite.create();
-        var top = Matter.Bodies.rectangle(0, 0, width, girth);
-        var left = Matter.Bodies.rectangle(-xoffset, yoffset, girth, (height - 2 * girth));
-        var right = Matter.Bodies.rectangle(xoffset, yoffset, girth, (height - 2 * girth));
+        var top = Matter.Bodies.rectangle(0, 0, width, girth, {sleepThreshold: 10});
+        var left = Matter.Bodies.rectangle(-xoffset, yoffset, girth, (height - 2 * girth), {sleepThreshold: 10});
+        var right = Matter.Bodies.rectangle(xoffset, yoffset, girth, (height - 2 * girth), {sleepThreshold: 10});
 
         Matter.Composite.add(arch, [top, left, right]);
 
         return arch;
     }
 
+    stackArch(width, height, girth) {
+        let xoffset = ((width - girth) / 2);
+        let yoffset = ((height - girth) / 2);
+
+        var arch = Matter.Composite.create();
+        var top = Matter.Composites.stack(0,0, 1, 1, 0, 0, function(x, y) {
+            return Matter.Bodies.rectangle(x, y, width, girth, {"sleepThreshold": 10});
+        });
+        Matter.Composite.move(top, Matter.Composite.allBodies(top), arch);
+        var left = Matter.Composites.stack(0,girth, 1, 2, 0, 2, function(x, y) {
+            return Matter.Bodies.rectangle(x, y, girth, (height - girth)/2, {"sleepThreshold": 10});
+        });
+        Matter.Composite.move(left, Matter.Composite.allBodies(left), arch);
+        var right = Matter.Composites.stack((width-girth),girth, 1, 2, 0, 2, function(x, y) {
+            return Matter.Bodies.rectangle(x, y, girth, (height - girth)/2, {"sleepThreshold": 10});
+        });
+        Matter.Composite.move(right, Matter.Composite.allBodies(right), arch);
+
+
+        return arch;
+    }
+
+    createMap(scale){
+        
+    }
 
 
 }
