@@ -16,7 +16,7 @@ class Generator {
         // var box = this.compArch(80, 80, 8);
         // var box = this.createBoxes(80, 80, 8, 2, 2);
 
-        this.translateGround(box);
+        // this.translateGround(box);
 
         Matter.Composite.add(this.world, box);
 
@@ -43,9 +43,9 @@ class Generator {
         let yoffset = ((height - girth) / 2);
 
         var grid = Matter.Composites.stack(0, 0, row, col, 0, 0, function(x, y) {
-            var partA = Matter.Bodies.rectangle(x, y, width, girth);
-            var part1 = Matter.Bodies.rectangle(x - xoffset, y + yoffset, girth, (height - 2 * girth));
-            var part2 = Matter.Bodies.rectangle(x + xoffset, y + yoffset, girth, (height - 2 * girth));
+            var partA = Matter.Bodies.rectangle(xoffset, yoffset, width, girth);
+            var part1 = Matter.Bodies.rectangle(xoffset, girth + yoffset, girth, (height - 2 * girth));
+            var part2 = Matter.Bodies.rectangle(xoffset, girth + yoffset, girth, (height - 2 * girth));
 
             return Matter.Body.create({
                 parts: [partA, part1, part2]
