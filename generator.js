@@ -2,8 +2,8 @@
 
 class Generator {
     constructor() {
-        this.seed = 
-        this.world = Matter.Composite.create();
+        this.seed =
+            this.world = Matter.Composite.create();
         this.ground = Matter.Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
         this.origin = { "x": 0, "y": 0 };
         this.ref = { "x": 400, "y": 580 };
@@ -109,9 +109,9 @@ class Generator {
         let yoffset = ((height - girth) / 2);
 
         var arch = Matter.Composite.create();
-        var top = Matter.Bodies.rectangle(0, 0, width, girth, {sleepThreshold: 10});
-        var left = Matter.Bodies.rectangle(-xoffset, yoffset, girth, (height - 2 * girth), {sleepThreshold: 10});
-        var right = Matter.Bodies.rectangle(xoffset, yoffset, girth, (height - 2 * girth), {sleepThreshold: 10});
+        var top = Matter.Bodies.rectangle(0, 0, width, girth, { sleepThreshold: 10 });
+        var left = Matter.Bodies.rectangle(-xoffset, yoffset, girth, (height - 2 * girth), { sleepThreshold: 10 });
+        var right = Matter.Bodies.rectangle(xoffset, yoffset, girth, (height - 2 * girth), { sleepThreshold: 10 });
 
         Matter.Composite.add(arch, [top, left, right]);
 
@@ -123,16 +123,16 @@ class Generator {
         let yoffset = ((height - girth) / 2);
 
         var arch = Matter.Composite.create();
-        var top = Matter.Composites.stack(0,0, 1, 1, 0, 0, function(x, y) {
-            return Matter.Bodies.rectangle(x, y, width, girth, {"sleepThreshold": 10});
+        var top = Matter.Composites.stack(0, 0, 1, 1, 0, 0, function(x, y) {
+            return Matter.Bodies.rectangle(x, y, width, girth, { "sleepThreshold": 10 });
         });
         Matter.Composite.move(top, Matter.Composite.allBodies(top), arch);
-        var left = Matter.Composites.stack(0,girth, 1, 2, 0, 2, function(x, y) {
-            return Matter.Bodies.rectangle(x, y, girth, (height - girth)/2, {"sleepThreshold": 10});
+        var left = Matter.Composites.stack(0, girth, 1, 2, 0, 2, function(x, y) {
+            return Matter.Bodies.rectangle(x, y, girth, (height - girth) / 2, { "sleepThreshold": 10 });
         });
         Matter.Composite.move(left, Matter.Composite.allBodies(left), arch);
-        var right = Matter.Composites.stack((width-girth),girth, 1, 2, 0, 2, function(x, y) {
-            return Matter.Bodies.rectangle(x, y, girth, (height - girth)/2, {"sleepThreshold": 10});
+        var right = Matter.Composites.stack((width - girth), girth, 1, 2, 0, 2, function(x, y) {
+            return Matter.Bodies.rectangle(x, y, girth, (height - girth) / 2, { "sleepThreshold": 10 });
         });
         Matter.Composite.move(right, Matter.Composite.allBodies(right), arch);
 
@@ -140,8 +140,61 @@ class Generator {
         return arch;
     }
 
-    createMap(scale){
-        
+
+    rect(width, height) {
+        for (let i = 0; i < width; i++) {
+            for (let j = 0; j < height; j++) {
+                if (i == 0) {
+                    if (width == 1) {
+                        if (height == 1) {
+                            //square 4-edge
+                        } else if (j == 0) {
+                            //top 3-edge
+                        } else if (j == (height - 1)) {
+                            //bottom 3-edge
+                        } else {
+                            //vertical 2-edge
+                        }
+                    } else if (height == 1) {
+                        if (i == 0) {
+                            //left 3-edge
+                        } else if (i == (width - 1)) {
+                            //right 3-edge
+                        } else {
+                            //horizontal 2-edge
+                        }
+                    } else if (j == 0) {
+                        //top left corner
+                    } else if (j == (height - 1)) {
+                        //bottom left corner
+                    } else {
+                        //left edge
+                    }
+                } else if (i == (width - 1)) {
+                    if (j == 0) {
+                        //top right corner
+                    } else if (j == (height - 1)) {
+                        //bottom right corner
+                    } else {
+                        //right edge
+                    }
+                } else {
+                    if (j == 0) {
+                        //top edge
+                    } else if (j == (height - 1)) {
+                        //bottom edge
+                    } else {
+                        //empty
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    createMap(scale) {
+
     }
 
 
