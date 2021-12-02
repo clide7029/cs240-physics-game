@@ -1,26 +1,30 @@
 // const { Composite } = require("matter-js");
+// const GameObjects = require("gameObjects");
 
 class Generator {
-    constructor() {
-        this.seed =
+    constructor(WIDTH_RATIO, WORLD_SCALE, FLOOR_HEIGHT) {
+            this.seed = 1;
             this.world = Matter.Composite.create();
-        this.ground = Matter.Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
-        this.origin = { "x": 0, "y": 0 };
-        this.ref = { "x": 400, "y": 580 };
-    }
+            // this.ground = Matter.Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
+            this.origin = { "x": 0, "y": 0 };
+            this.ref = { "x": 500, "y": FLOOR_HEIGHT };
+        } //WIDTH_RATIO * WORLD_SCALE * 0.5
 
     //creates world - test dummy at the moment
     getWorld() {
-        Matter.Composite.add(this.world, this.ground);
+        // Matter.Composite.add(this.world, this.ground);
 
-        var box = this.stackArch(160, 160, 32);
+        var box = this.arch();
+        // var box = this.stackArch(160, 160, 32);
         // var box = this.buildArches(80, 80, 10, 4, 2);
         // var box = this.compArch(80, 80, 8);
         // var box = this.createBoxes(80, 80, 8, 2, 2);
 
-        // this.translateGround(box);
+        this.translateGround(box);
 
         Matter.Composite.add(this.world, box);
+
+        console.dir(this.world);
 
         return this.world;
     }
@@ -37,6 +41,23 @@ class Generator {
 
         return composite;
     }
+
+
+    arch(x = 0, y = 0) {
+        let texture = Matter.Common.choose(["Glass/", "Metal/", "Stone/", "Wood/"]);
+        let comp = Matter.Composite.create();
+        let stack = Matter.Composites.stack(0, GameObjects.BLOCK_SIZE, 2, 2, 3 * GameObjects.BLOCK_SIZE, 0, (x, y) => {
+            return GameObjects.rect(x, y, 1, 2, `images/Material Texture/${texture}`);
+        })
+        Matter.Composite.move(stack, Matter.Composite.allBodies(stack), comp);
+        Matter.Composite.add(comp, GameObjects.rect(5 * GameObjects.BLOCK_SIZE / 2, GameObjects.BLOCK_SIZE / 2, 5, 1, `images/Material Texture/${texture}`))
+        Matter.Composite.translate(comp, { x: x, y: y })
+        return comp
+    }
+
+
+
+
 
     //create a grid of arches
     createArches(width, height, girth, row, col) {
