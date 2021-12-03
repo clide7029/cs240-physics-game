@@ -118,6 +118,11 @@ class Generator {
         return arch;
     }
 
+
+
+
+    
+
     stackArch(width, height, girth) {
         let xoffset = ((width - girth) / 2);
         let yoffset = ((height - girth) / 2);
