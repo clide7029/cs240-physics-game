@@ -70,7 +70,7 @@ class GameObjects {
                 }
             }
         });
-        let scale = { x: Game.WIDTH_RATIO * Game.RENDER_SCALE / game.renderer.canvas.width, y: Game.HEIGHT_RATIO * Game.RENDER_SCALE / game.renderer.canvas.height }
+        let scale = { x: Generator.WIDTH_RATIO * Generator.RENDER_SCALE / game.renderer.canvas.width, y: Generator.HEIGHT_RATIO * Generator.RENDER_SCALE / game.renderer.canvas.height }
         Matter.Mouse.setScale(mouseConstraint.mouse, scale)
         return mouseConstraint;
     }
