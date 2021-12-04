@@ -22,6 +22,8 @@ class Game {
 
         this.mouseConstraint = GameObjects.mouseConstraint(this);
 
+        this.ground = Matter.Bodies.rectangle(Generator.WIDTH_RATIO * Generator.WORLD_SCALE / 2, Generator.FLOOR_HEIGHT + 250, Generator.WIDTH_RATIO * Generator.WORLD_SCALE, 500, { isStatic: true, label: "Ground", friction: 1, render: { opacity: 0.5 } });
+
         this.slingShot = GameObjects.slingShot(this, Generator.WIDTH_RATIO * Generator.WORLD_SCALE / 8, Generator.HEIGHT_RATIO * Generator.WORLD_SCALE / 3);
 
         //We save the previous velocity for every body within the game-world,
@@ -75,7 +77,7 @@ class Game {
         })
 
 
-        Matter.Composite.add(this.engine.world, [this.generator.getSkeleton(), this.generator.getWorld(), this.mouseConstraint, this.slingShot, this.slingShot.bodyB])
+        Matter.Composite.add(this.engine.world, [this.generator.getWorld(), this.ground, this.mouseConstraint, this.slingShot, this.slingShot.bodyB])
         Matter.Render.run(this.renderer);
         Matter.Runner.run(this.engine);
     }
