@@ -19,7 +19,7 @@ class Generator {
 
     static arch(x = 0, y = 0) {
         let texture = Matter.Common.choose(["Glass/", "Metal/", "Stone/", "Wood/"]);
-        let comp = Matter.Composite.create();
+        let comp = Matter.Composite.create({ level: "bottom" });
         let stack = Matter.Composites.stack(0, GameObjects.BLOCK_SIZE, 2, 2, 3 * GameObjects.BLOCK_SIZE, 0, (x, y) => {
             return GameObjects.rect(x, y, 1, 2, `images/Material Texture/${texture}`);
         });
@@ -31,7 +31,7 @@ class Generator {
 
     static box(x = 0, y = 0) {
         let texture = Matter.Common.choose(["Glass/", "Metal/", "Stone/", "Wood/"]);
-        let comp = Matter.Composite.create();
+        let comp = Matter.Composite.create({ level: "bottom" });
         let vertical = Matter.Composites.stack(0, GameObjects.BLOCK_SIZE, 2, 1, 3 * GameObjects.BLOCK_SIZE, 0, (x, y) => {
             return GameObjects.rect(x, y, 1, 3, `images/Material Texture/${texture}`);
         });
@@ -63,9 +63,10 @@ class Generator {
 
         var arch = Generator.arch();
         var box = Generator.box(Generator.STRUCT_SIZE);
+        var box2 = Generator.box(Generator.STRUCT_SIZE, -Generator.STRUCT_SIZE);
 
 
-        Matter.Composite.add(this.world, [arch, box]);
+        Matter.Composite.add(this.world, [arch, box, box2]);
 
         this.translateGround(this.world);
 
