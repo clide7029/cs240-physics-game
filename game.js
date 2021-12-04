@@ -42,8 +42,15 @@ class Game {
         Matter.Events.on(this.engine, "afterUpdate", (event) => {
             let bodies = Matter.Composite.allBodies(event.source.world)
             for (let body of bodies) {
-                for (let part of body.parts) {
-                    part.angle = body.angle;
+                if (body.parts.length > 1) {
+                    for (let part of body.parts) {
+                        part.angle = body.angle;
+                    }
+                }
+                if (body.label == "Block") {
+                    if (body.shockAbsorbed > 500) {
+                        Matter.Composite.remove(event.source.world, body, true)
+                    }
                 }
             }
         })
@@ -57,14 +64,18 @@ class Game {
                 let mag = Matter.Vector.magnitude(Matter.Vector.sub(momentumA, momentumB));
                 pair.bodyA.shockAbsorbed = pair.bodyA.shockAbsorbed || 0;
                 pair.bodyA.shockAbsorbed += Math.floor(mag);
+                pair.bodyA.parent.shockAbsorbed = pair.bodyA.parent.shockAbsorbed || 0;
+                pair.bodyA.parent.shockAbsorbed += pair.bodyA.shockAbsorbed;
 
                 pair.bodyB.shockAbsorbed = pair.bodyB.shockAbsorbed || 0;
                 pair.bodyB.shockAbsorbed += Math.floor(mag);
+                pair.bodyB.parent.shockAbsorbed = pair.bodyB.parent.shockAbsorbed || 0;
+                pair.bodyB.parent.shockAbsorbed += pair.bodyB.shockAbsorbed;
             }
         })
 
 
-        Matter.Composite.add(this.engine.world, [this.generator.getSkeleton(), this.mouseConstraint, this.slingShot, this.slingShot.bodyB])
+        Matter.Composite.add(this.engine.world, [this.generator.getSkeleton(), this.generator.getWorld(), this.mouseConstraint, this.slingShot, this.slingShot.bodyB])
         Matter.Render.run(this.renderer);
         Matter.Runner.run(this.engine);
     }
