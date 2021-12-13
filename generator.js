@@ -17,8 +17,7 @@ class Generator {
 
     static STRUCT_SIZE = GameObjects.BLOCK_SIZE * 5;
 
-    static arch(x = 0, y = 0) {
-        let texture = Matter.Common.choose(["Glass/", "Metal/", "Stone/", "Wood/"]);
+    static arch(x = 0, y = 0, texture) {
         let comp = Matter.Composite.create({ level: "bottom", label: "Structure" , width: 1, height: 1 });
         let stack = Matter.Composites.stack(0, GameObjects.BLOCK_SIZE, 2, 2, 3 * GameObjects.BLOCK_SIZE, 0, (x, y) => {
             return GameObjects.rect(x, y, 1, 2, `images/Material Texture/${texture}`);
@@ -29,8 +28,7 @@ class Generator {
         return comp
     }
 
-    static doubleArch(x = 0, y = 0) {
-        let texture = Matter.Common.choose(["Glass/", "Metal/", "Stone/", "Wood/"]);
+    static doubleArch(x = 0, y = 0, texture) {
         let comp = Matter.Composite.create({ level: "bottom", label: "Structure" , width: 1, height: 1 });
         
         let top = Matter.Composites.stack(0, 0, 1, 1, GameObjects.BLOCK_SIZE, 0, (x, y) => {
@@ -45,8 +43,7 @@ class Generator {
         return comp
     }
 
-    static box(x = 0, y = 0) {
-        let texture = Matter.Common.choose(["Glass/", "Metal/", "Stone/", "Wood/"]);
+    static box(x = 0, y = 0, texture) {
         let comp = Matter.Composite.create({ level: "bottom", label: "Structure" , width: 1, height: 1 });
         let vertical = Matter.Composites.stack(0, GameObjects.BLOCK_SIZE, 2, 1, 3 * GameObjects.BLOCK_SIZE, 0, (x, y) => {
             return GameObjects.rect(x, y, 1, 3, `images/Material Texture/${texture}`);
@@ -78,7 +75,7 @@ class Generator {
         return comp
     }
 
-    static blob(x = 0, y = 0, texture = "glass") {
+    static blob2(x = 0, y = 0, texture = "glass") {
         let comp = Matter.Composite.create({ level: "bottom", label: "Structure", width: 1, height: 1 });
         let top = Matter.Composites.stack(0, 0, 3, 1, GameObjects.BLOCK_SIZE, 0, (x, y) => {
             return GameObjects.rect(x, y, 1, 1, texture);
@@ -111,8 +108,7 @@ class Generator {
         return comp
     }
 
-    static tripillars(x = 0, y = 0) { 
-        let texture = Matter.Common.choose(["Glass/", "Metal/", "Stone/", "Wood/"]);
+    static tripillars(x = 0, y = 0, texture) { 
         let comp = Matter.Composite.create({ level: "bottom", label: "Structure" , width: 1, height: 1 });
         let vertical = Matter.Composites.stack(0, 0, 3, 1, GameObjects.BLOCK_SIZE, 0, (x, y) => {
             return GameObjects.rect(x, y, 1, 5, `images/Material Texture/${texture}`);
@@ -129,14 +125,16 @@ class Generator {
 
     //creates world - test dummy at the moment
     getWorld() {
+        let texture = Matter.Common.choose(["Glass/", "Metal/", "Stone/", "Wood/"]);
+        
         var world = Matter.Composite.create();
 
 
-        var dpillars = Generator.dualpillars();
-        var arch = Generator.arch(0, -Generator.STRUCT_SIZE);
-        var tpillars = Generator.tripillars(Generator.STRUCT_SIZE);
-        var box = Generator.box(Generator.STRUCT_SIZE, -Generator.STRUCT_SIZE);
-        var darch = Generator.doubleArch(Generator.STRUCT_SIZE, -2 * Generator.STRUCT_SIZE);
+        var dpillars = Generator.dualpillars(0, 0, texture);
+        var arch = Generator.arch(0, -Generator.STRUCT_SIZE, texture);
+        var tpillars = Generator.tripillars(Generator.STRUCT_SIZE, texture);
+        var box = Generator.box(Generator.STRUCT_SIZE, -Generator.STRUCT_SIZE, texture);
+        var darch = Generator.doubleArch(Generator.STRUCT_SIZE, -2 * Generator.STRUCT_SIZE, texture);
 
 
         Matter.Composite.add(world, [arch, dpillars, tpillars, box, darch]);
